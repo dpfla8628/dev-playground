@@ -19,6 +19,56 @@
 
 <br/>
 
+## 🔑 채널 시스템 원리
+
+서버 하나를 여러 사람이 써도 서로의 웹훅이 섞이지 않게 하려면 **격리된 통신 공간**이 필요합니다.  
+이를 위해 브라우저가 처음 접속할 때 **랜덤 채널 ID** 를 만들고, 그 ID를 "방 번호"처럼 사용합니다.
+
+```
+브라우저 접속
+    │
+    ▼
+채널 ID 생성 (Math.random().toString(36).slice(2, 10))
+    │  예: "lszxzxxi"
+    │
+    ├─ sessionStorage에 저장
+    │      → 새로고침해도 같은 ID 유지 (히스토리 안 사라짐)
+    │      → 탭 닫으면 초기화 (localStorage와의 차이)
+    │
+    ├─ 수신 URL 생성: POST http://localhost:3001/hooks/lszxzxxi
+    │      → 외부에서 이 URL로 요청을 보내야 내 화면에 뜸
+    │
+    └─ WebSocket 연결: ws://localhost:3001?channel=lszxzxxi
+           → 서버는 같은 channel ID에 연결된 클라이언트에만 broadcast
+```
+
+**왜 랜덤 ID인가?**  
+서버가 별도 로그인·인증 없이 채널을 분리하는 가장 단순한 방법입니다.  
+`/hooks/abc`로 오는 요청은 `abc` 채널 구독자에게만 전달되고, `/hooks/xyz`는 `xyz` 채널에만 전달됩니다.  
+URL을 모르면 다른 사람의 채널에 접근할 수 없어 간단한 격리 효과도 생깁니다.
+
+```js
+// client: 채널 ID 생성 및 sessionStorage 관리
+const [channelId] = useState(() => {
+  const saved = sessionStorage.getItem('whi-channel');
+  if (saved) return saved;
+  const id = Math.random().toString(36).slice(2, 10);
+  sessionStorage.setItem('whi-channel', id);
+  return id;
+});
+
+// server: channel ID 별로 WebSocket 클라이언트를 분리해서 관리
+const channels = new Map(); // { "lszxzxxi": Set<WebSocket>, "abc123": Set<WebSocket> }
+
+wss.on('connection', (ws, req) => {
+  const channelId = new URL(req.url, 'http://localhost').searchParams.get('channel');
+  if (!channels.has(channelId)) channels.set(channelId, new Set());
+  channels.get(channelId).add(ws); // 해당 채널 방에 입장
+});
+```
+
+<br/>
+
 ## ⚙️ 기술 스택
 
 ### 🟢 Node.js
