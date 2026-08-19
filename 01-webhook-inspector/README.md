@@ -73,26 +73,8 @@ wss.on('connection', (ws, req) => {
 
 ### 왜 client / server로 분리했나?
 
-웹훅 수신(서버)과 UI 렌더링(클라이언트)은 역할이 완전히 다릅니다.  
-서버는 외부 서비스로부터 요청을 받아야 해서 항상 떠 있어야 하고, 클라이언트는 브라우저에서 실행됩니다.  
-분리하면 나중에 서버만 배포하고 클라이언트는 CDN에 올리는 식으로 독립적으로 운영할 수 있습니다.  
-실무에서도 백엔드/프론트엔드를 별도 서버에 배포하는 구조가 일반적입니다.
-
----
-
-### Express — 왜 썼나?
-
-Node.js 기본 모듈만으로 HTTP 서버를 만들면 URL 파싱, body 읽기, 헤더 설정을 전부 직접 해야 합니다.  
-Express는 이걸 추상화해서 **"이 URL로 요청 오면 이 함수 실행"** 을 간결하게 연결해줍니다.
-
-```js
-// URL + HTTP 메서드 조합으로 처리 함수를 연결 (라우팅)
-app.all('/hooks/:channelId', handler); // POST /hooks/abc → handler 실행
-app.get('/api/channels/:id/requests', handler);
-
-// 요청이 핸들러에 도달하기 전에 거치는 처리 단계 (미들웨어)
-app.use('/api', express.json()); // body를 자동으로 JSON 파싱
-```
+서버는 외부에서 날아오는 웹훅을 받아야 해서 백그라운드에서 항상 실행되어야 하고,  
+클라이언트는 브라우저에서만 실행되는 UI입니다. 역할이 다르니 분리했습니다.
 
 ---
 
@@ -122,10 +104,13 @@ PostgreSQL은 별도 서버를 띄워야 하지만, SQLite는 파일 하나(`.db
 
 ---
 
-### `express.raw()` — 미들웨어 순서 문제
+### Express & `express.raw()` — 미들웨어 순서 문제
+
+Express는 Node.js에서 **"이 URL로 요청 오면 이 함수 실행"** 을 간결하게 연결해주는 HTTP 프레임워크입니다.  
+요청이 핸들러에 도달하기 전에 거치는 처리 단계를 **미들웨어**라고 하는데, 등록 순서대로 실행됩니다.
 
 `app.use(express.json())`을 전역에 등록하면 body stream을 먼저 소비해버려서  
-`/hooks` 라우트에서 원본 body가 빈 값으로 옵니다.
+`/hooks` 라우트의 `express.raw()`가 빈 body를 받는 문제가 생깁니다.
 
 ```js
 // ❌ 전역 json()이 /hooks의 body stream을 먼저 소비함
