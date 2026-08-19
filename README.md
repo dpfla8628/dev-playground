@@ -1,13 +1,31 @@
-# dev-playground
+# 🧪 dev-playground
 
-Daily toy projects built with trending stacks (2026). Each project solves a real problem you'd encounter in production — not calculators, not clones.
+> 하루 한 개, 실무에서 쓰이는 기술 스택으로 토이 프로젝트를 만들어가는 기록입니다.
 
-## Projects
+<br/>
 
-| # | Project | Stack | Key Concept |
-|---|---------|-------|-------------|
-| 01 | [Webhook Inspector](./01-webhook-inspector) | Node.js · WebSocket · SQLite · React | Real-time event streaming |
+## 📌 왜 이 레포를 만들었나?
+
+계산기나 투두리스트 같은 튜토리얼 수준의 예제가 아닌,  
+**실제 개발 현장에서 마주치는 문제를 작은 스케일로 직접 구현**해보는 것이 목표입니다.
+
+잡코리아·Okky 채용 공고 분석을 통해 **2026년 현재 실제로 요구되는 기술 스택**을 선정하고,  
+각 프로젝트마다 _"왜 이 기술을 선택했는가"_ 를 문서화합니다.
+
+- 단순 클론 코딩 ❌
+- 실무에서 실제로 쓰이는 패턴을 작게 구현 ✅
+- 기술 선택 근거를 직접 정리하며 학습 ✅
+
+<br/>
+
+## 🗂️ 프로젝트 목록
+
+| # | 프로젝트 | 핵심 스택 | 다루는 개념 |
+|:-:|---------|-----------|------------|
+| 01 | [🔍 Webhook Inspector](./01-webhook-inspector) | Node.js · WebSocket · SQLite · React | 실시간 이벤트 스트리밍, 웹소켓 팬아웃, 영속성 |
+
+<br/>
 
 ---
 
-> One project per day. Built to learn, built to ship.
+> 📬 매일 하나씩 추가됩니다.
