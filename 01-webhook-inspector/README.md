@@ -128,22 +128,36 @@
 
 ## 🚀 실행 방법
 
-```bash
-# 터미널 1 — 서버
-cd server
-npm install
-npm run dev    # node --watch 로 파일 변경 감지
+> ⚠️ **Windows PowerShell 주의사항**
+> - `&&` 연산자는 PowerShell 5.1에서 지원되지 않습니다. 명령어를 한 줄씩 실행하세요.
+> - 레포 위치: `C:\Users\<이름>\Documents\dev-playground\`
 
-# 터미널 2 — 클라이언트
-cd client
+**터미널 1 — 서버 실행**
+```powershell
+cd C:\Users\<이름>\Documents\dev-playground\01-webhook-inspector\server
 npm install
-npm run dev    # Vite dev server (http://localhost:5173)
+npm run dev
+```
+
+**터미널 2 — 클라이언트 실행 (새 창 열기)**
+```powershell
+cd C:\Users\<이름>\Documents\dev-playground\01-webhook-inspector\client
+npm install
+npm run dev
 ```
 
 브라우저에서 **http://localhost:5173** 를 열면 웹훅 수신 URL이 자동 생성됩니다.
 
+**테스트 요청 보내기 (PowerShell)**
+```powershell
+Invoke-RestMethod -Uri "http://localhost:3001/hooks/<채널-ID>" `
+  -Method POST `
+  -ContentType "application/json" `
+  -Body '{"event": "payment.completed", "amount": 9900, "user": "alice"}'
+```
+
+**또는 curl (Windows Terminal / Git Bash)**
 ```bash
-# 테스트: 아래 URL에 POST 요청 보내보기
 curl -X POST http://localhost:3001/hooks/<채널-ID> \
   -H "Content-Type: application/json" \
   -d '{"event": "payment.completed", "amount": 9900, "user": "alice"}'
