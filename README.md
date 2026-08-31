@@ -19,6 +19,7 @@
 | # | 프로젝트 | 핵심 스택 | 다루는 개념 |
 |:-:|---------|-----------|------------|
 | 01 | [🔍 Webhook Inspector](./01-webhook-inspector) | Node.js · WebSocket · SQLite · React | 실시간 이벤트 스트리밍, 웹소켓 팬아웃, 영속성 |
+| 02 | [📄 RAG Doc Chat](./02-rag-doc-chat) | FastAPI · ChromaDB · OpenAI · Claude · React | RAG 패턴, 임베딩, 벡터 검색, LLM 컨텍스트 주입 |
 
 <br/>
 
