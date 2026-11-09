@@ -11,7 +11,7 @@
 ## 🎯 왜 만들었나?
 
 PDF나 TXT 파일을 업로드하면 그 문서에 대해 AI와 대화할 수 있는 챗봇.  
-"RAG(Retrieval-Augmented Generation)" 는 2026년 채용 공고에서 가장 자주 보이는 키워드 중 하나입니다.
+"RAG(Retrieval-Augmented Generation)" 는 요즘 LLM 서비스에서 가장 널리 쓰이는 패턴 중 하나입니다.
 
 기업들은 자사 내부 문서(사규, 매뉴얼, 계약서)를 AI에 연결하고 싶어하는데, ChatGPT에 통째로 보내면 세 가지 문제가 생깁니다.
 
